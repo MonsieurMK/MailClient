@@ -16,3 +16,6 @@ workspace.code-workspace
 
 # Ignore Gradle build output directory
 build
+
+# Ignore Java binaries
+*.class
