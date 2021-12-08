@@ -28,3 +28,9 @@ application {
     // Define the main class for the application.
     mainClass = 'MailClient.App'
 }
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'ActionTest.App'
+    }
+}
