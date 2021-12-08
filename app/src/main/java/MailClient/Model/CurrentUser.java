@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CurrentUser extends User {
-    private List<Mail> sentMails = new ArrayList<Mail> ();
-
     private List<User> contacts = new ArrayList<User> ();
 
     private ReceiveProtocol protocol;
@@ -13,6 +11,10 @@ public class CurrentUser extends User {
     private List<Category> categories = new ArrayList<Category> ();
 
     private SMTP sendProtocol;
+
+    private Category sent;
+
+    private Category mailbox;
 
     public CurrentUser(String mailAddress, String name, ReceiveProtocol protocol) {
         super(mailAddress, name);
