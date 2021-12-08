@@ -19,3 +19,6 @@ build
 
 # Ignore Java binaries
 *.class
+
+# Intellij Idea directory
+.idea/
