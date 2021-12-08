@@ -31,6 +31,6 @@ application {
 
 jar {
     manifest {
-        attributes 'Main-Class': 'ActionTest.App'
+        attributes 'Main-Class': 'MailClient.App'
     }
 }
