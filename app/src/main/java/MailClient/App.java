@@ -3,7 +3,7 @@
  */
 package MailClient;
 
-import View.MainFrame;
+import MailClient.View.MainFrame;
 
 public class App {
 

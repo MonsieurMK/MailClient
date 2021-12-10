@@ -1,10 +1,10 @@
-package View;
+package MailClient.View;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class MailTextPanel extends JTextPane {
-    public MailTextPanel() {
+public class MailAttachmentPanel extends JPanel {
+    public MailAttachmentPanel() {
         this.setBorder(BorderFactory.createLineBorder(Color.CYAN));
     }
 }

@@ -1,4 +1,4 @@
-package View;
+package MailClient.View;
 
 import javax.swing.*;
 import java.awt.*;
