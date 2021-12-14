@@ -3,7 +3,11 @@
  */
 package MailClient;
 
+import MailClient.Model.Mail;
+import MailClient.Model.POP;
 import MailClient.View.MainFrame;
+
+import java.util.ArrayList;
 
 public class App {
 

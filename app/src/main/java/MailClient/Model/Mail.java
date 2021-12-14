@@ -1,28 +1,39 @@
 package MailClient.Model;
 
+import javax.mail.Address;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class Mail {
-    private String mailObject;
 
+    private String mailSubject;
+    private Date sentDate;
+    private List<User> senders;
+    private List<User> recipients;
     private String content;
+    private List<Attachment> attachements;
 
-    private Date date;
-
-    private List<Attachment> attachements = new ArrayList<Attachment> ();
-
-    private User sender;
-
-    private List<User> recipient = new ArrayList<User> ();
-
-    public Mail(String mailObject, String content, User sender, User recipient) {
+    public Mail(String mailSubject, List<User> senders, List<User> recipients, Date sentdate, String content) {
+        this.mailSubject = mailSubject;
+        this.senders = senders;
+        this.recipients = recipients;
+        this.sentDate = sentdate;
+        this.content = content;
     }
 
-    public String getMailObject() {
+    public Mail(String mailSubject, Date sentDate, List<User> senders, List<User> recipients, String content, List<Attachment> attachements) {
+        this.mailSubject = mailSubject;
+        this.sentDate = sentDate;
+        this.senders = senders;
+        this.recipients = recipients;
+        this.content = content;
+        this.attachements = attachements;
+    }
+
+    public String getMailSubject() {
         // Automatically generated method. Please delete this comment before entering specific code.
-        return this.mailObject;
+        return this.mailSubject;
     }
 
     public String getContent() {
@@ -30,15 +41,27 @@ public class Mail {
         return this.content;
     }
 
-    public Date getDate() {
+    public Date getSentDate() {
         // Automatically generated method. Please delete this comment before entering specific code.
-        return this.date;
+        return this.sentDate;
     }
 
     public void addAttachment(Attachment attachment) {
+        this.attachements.add(attachment);
     }
 
     public void addRecipient(User recipient) {
+        this.recipients.add(recipient);
     }
 
+    @Override
+    public String toString() {
+        return "Mail{" +
+                "mailSubject='" + mailSubject + '\'' +
+                ", content='" + content + '\'' +
+                ", sentDate=" + sentDate +
+                ", sender=" + senders.toString() +
+                ", recipient=" + recipients.toString() +
+                '}';
+    }
 }
