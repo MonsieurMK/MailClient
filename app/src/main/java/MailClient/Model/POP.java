@@ -1,13 +1,7 @@
 package MailClient.Model;
 
-import com.sun.mail.pop3.POP3Folder;
-import com.sun.mail.pop3.POP3Message;
-import com.sun.mail.pop3.POP3Store;
-
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.NoSuchProviderException;
-import javax.mail.Session;
+import javax.mail.*;
+import javax.mail.internet.MimeMultipart;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,35 +10,57 @@ import java.util.Properties;
 public class POP extends ReceiveProtocol {
 
     @Override
-    public List<Mail> receive(String host, String storeType, String user, String password) {
+    public List<Mail> receive(String host, String user, String password) {
+        // properties -> sessions -> store -> folder -> messages
         // properties
         Properties props = new Properties();
-        props.put("mail.pop3.host", host);
-        System.out.println("Prop ok");
+        props.setProperty("mail.store.protocol", "pop3s");
+        props.setProperty("mail.pop3s.user", user);
+        props.setProperty("mail.pop3s.host", host);
+        // TODO if working add port to mathod parameters
+        props.setProperty("mail.pop3s.port", "995");
+        // may not be needed
+        props.setProperty("mail.pop3s.ssl.enable", "true");
+        //props.setProperty("mail.debug", "true");
 
-        // sessions
-        Session session = Session.getDefaultInstance(props);
-        System.out.println("Session ok");
+        // session
+        Session session = Session.getInstance(props);
 
-        POP3Store store = null;
-        POP3Folder folder = null;
-        ArrayList<Mail> mails = new ArrayList<>();
-        POP3Message message = null;
-        // store
         try {
-            store = (POP3Store) session.getStore();
-            System.out.println("Store ok");
-            folder = (POP3Folder) store.getFolder("INBOX");
-            System.out.println("Folder ok");
-            for (int i = 0; i < folder.getMessageCount(); i++) {
-                message = (POP3Message) folder.getMessage(i);
-                mails.add(new Mail(message.getSubject(), User.userFromAdress(List.of(message.getFrom())), User.userFromAdress(List.of(message.getAllRecipients())), message.getSentDate(), (String) message.getContent()));
-                System.out.println("Mail added");
-            }
-            store.close();
-            folder.close();
+            // store
+            Store store = session.getStore("pop3s");
+            store.connect(user, password);
 
-            System.out.println("return mails");
+            // folder
+            Folder folder = store.getFolder("INBOX");
+            folder.open(Folder.READ_ONLY);
+
+            // messages
+            System.out.println(folder.getMessageCount() + " messages");
+            Message[] messages = folder.getMessages();
+            ArrayList<Mail> mails = new ArrayList<>();
+            ArrayList<User> senders = new ArrayList<>();
+            ArrayList<User> recipients = new ArrayList<>();
+            for (Message message :
+                    messages) {
+                for (Address address:
+                     message.getFrom()) {
+                    senders.add(new User(address.toString()));
+                }
+                for (Address address :
+                        message.getAllRecipients()) {
+                    recipients.add(new User(address.toString()));
+                }
+                System.out.println("subject : " + message.getSubject());
+                MimeMultipart multipart = (MimeMultipart) message.getContent();
+                mails.add(new Mail(message.getSubject(),
+                        senders,
+                        recipients,
+                        null,
+                        (String) multipart.getBodyPart(0).getContent()));
+            }
+            folder.close();
+            store.close();
             return mails;
         } catch (MessagingException | IOException e) {
             e.printStackTrace();
