@@ -7,8 +7,8 @@ import java.awt.*;
 
 public class MailTextPanel extends JTextPane {
 
-    private JLabel mailInfos;
-    private JLabel mailBody;
+    private MailInfoPanel mailInfosPanel;
+    private JTextArea mailBody;
 
     public MailTextPanel() {
         this.setBorder(BorderFactory.createLineBorder(Color.CYAN));
@@ -19,20 +19,30 @@ public class MailTextPanel extends JTextPane {
         gbc.gridy = 0;
         gbc.weightx = 1.0;
         gbc.weighty = 1.0;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.fill = GridBagConstraints.BOTH;
 
-        this.mailInfos = new JLabel();
-        this.add(this.mailInfos, gbc);
+        this.mailInfosPanel = new MailInfoPanel();
+        this.add(this.mailInfosPanel, gbc);
 
         gbc.gridy = 1;
-        gbc.weighty = 10.0;
-        this.mailBody = new JLabel();
-        this.add(this.mailBody, gbc);
-        this.mailBody.setVerticalAlignment(JLabel.TOP);
+        gbc.weighty = 4.0;
+        JPanel mailBodyPanel = new JPanel();
+        this.mailBody = new JTextArea();
+        this.mailBody.setEditable(false);
+        this.mailBody.setAlignmentX(JTextArea.LEFT_ALIGNMENT);
+        mailBodyPanel.add(mailBody);
+        this.add(mailBodyPanel, gbc);
+
     }
 
     public void showMailContent(Mail mail) {
-        this.mailInfos.setText("Subject: " + mail.getMailSubject() + ", sentDate: " + mail.getSentDate());
-        this.mailBody.setText("Content: " + mail.getContent());
+        // mail infos
+        this.mailInfosPanel.setSubject(mail.getMailSubject());
+        this.mailInfosPanel.setDate(mail.getSentDate());
+        // TODO change when senders added to mail
+        this.mailInfosPanel.setSender(null);
+
+        // mail body
+        this.mailBody.setText(mail.getContent());
     }
 }

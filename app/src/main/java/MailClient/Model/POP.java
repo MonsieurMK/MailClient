@@ -40,6 +40,7 @@ public class POP extends ReceiveProtocol {
 
             // messages
             Message[] messages = folder.getMessages();
+            System.out.println("messages received: " + folder.getMessages().length);
             ArrayList<Mail> mails = new ArrayList<>();
             ArrayList<User> senders;
             ArrayList<User> recipients;

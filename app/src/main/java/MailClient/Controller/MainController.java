@@ -16,8 +16,9 @@ public class MainController {
 
     private MainPanel mainPanel;
 
-    public MainController() {
-        this.currentUser = new CurrentUser("mailclienttestjava@gmail.com", "test", "pop.gmail.com", "azertyui1.", new POP());
+    public MainController(String address, String name, String host, String password) {
+        //this.currentUser = new CurrentUser("mailclienttestjava@gmail.com", "test", "pop.gmail.com", "azertyui1.", new POP());
+        this.currentUser = new CurrentUser(address, name, host, password, new POP());
         this.userManager = new UserManager(currentUser);
 
         this.mainPanel = new MainPanel(this);

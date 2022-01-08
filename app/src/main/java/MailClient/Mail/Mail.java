@@ -6,6 +6,7 @@ import java.util.List;
 
 public class Mail {
 
+    // TODO implement senders and recipients display
     private String mailSubject;
     private Date sentDate;
     private List<User> senders;
