@@ -1,11 +1,11 @@
 package MailClient.Model;
 
+import MailClient.Mail.Mail;
+
 import java.util.List;
 
-public class ReceiveProtocol {
-    public static List<Mail> receive() {
-        // TODO Auto-generated return
-        return null;
-    }
+public abstract class ReceiveProtocol {
+
+    public abstract List<Mail> receive(String host, String user, String password);
 
 }

@@ -3,11 +3,13 @@
  */
 package MailClient;
 
+import MailClient.Controller.MainController;
 import MailClient.View.MainFrame;
+import MailClient.View.MainPanel;
 
 public class App {
 
     public static void main(String[] args) {
-        MainFrame mainFrame = new MainFrame();
+        MainController mc = new MainController(args[0], args[1], args[2], args[3]);
     }
 }
