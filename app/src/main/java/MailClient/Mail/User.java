@@ -1,4 +1,4 @@
-package MailClient.Model;
+package MailClient.Mail;
 
 
 import javax.mail.Address;

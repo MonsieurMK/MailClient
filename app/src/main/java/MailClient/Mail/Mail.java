@@ -1,6 +1,5 @@
-package MailClient.Model;
+package MailClient.Mail;
 
-import javax.mail.Address;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -16,8 +15,8 @@ public class Mail {
 
     public Mail(String mailSubject, List<User> senders, List<User> recipients, Date sentdate, String content) {
         this.mailSubject = mailSubject;
-        this.senders = senders;
-        this.recipients = recipients;
+        this.senders = new ArrayList<>(senders);
+        this.recipients = new ArrayList<>(recipients);
         this.sentDate = sentdate;
         this.content = content;
     }
@@ -25,10 +24,10 @@ public class Mail {
     public Mail(String mailSubject, Date sentDate, List<User> senders, List<User> recipients, String content, List<Attachment> attachements) {
         this.mailSubject = mailSubject;
         this.sentDate = sentDate;
-        this.senders = senders;
-        this.recipients = recipients;
+        this.senders = new ArrayList<>(senders);
+        this.recipients = new ArrayList<>(recipients);
         this.content = content;
-        this.attachements = attachements;
+        this.attachements = new ArrayList<>(attachements);
     }
 
     public String getMailSubject() {

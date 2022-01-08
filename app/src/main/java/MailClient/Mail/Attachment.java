@@ -1,4 +1,4 @@
-package MailClient.Model;
+package MailClient.Mail;
 
 
 public class Attachment {

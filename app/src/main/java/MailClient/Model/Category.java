@@ -1,5 +1,7 @@
 package MailClient.Model;
 
+import MailClient.Mail.Mail;
+
 import java.util.ArrayList;
 import java.util.List;
 

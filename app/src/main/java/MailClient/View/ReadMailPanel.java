@@ -1,5 +1,7 @@
 package MailClient.View;
 
+import MailClient.Mail.Mail;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -26,5 +28,9 @@ public class ReadMailPanel extends JPanel {
         gbc.gridx = 1;
         gbc.weightx = 1.0;
         this.add(this.mailAttachmentPanel, gbc);
+    }
+
+    public void showMail(Mail mail) {
+        this.mailTextPanel.showMailContent(mail);
     }
 }

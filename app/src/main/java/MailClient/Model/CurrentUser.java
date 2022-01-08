@@ -1,5 +1,8 @@
 package MailClient.Model;
 
+import MailClient.Mail.Mail;
+import MailClient.Mail.User;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,8 +19,16 @@ public class CurrentUser extends User {
 
     private Category mailbox;
 
-    public CurrentUser(String mailAddress, String name, ReceiveProtocol protocol) {
+    private String host;
+
+    // TODO protect, unsafe
+    private String password;
+
+    public CurrentUser(String mailAddress, String name, String host, String password, ReceiveProtocol protocol) {
         super(mailAddress, name);
+        this.host = host;
+        this.password = password;
+        this.protocol = protocol;
     }
 
     public void addCategory(Category category) {
@@ -29,7 +40,8 @@ public class CurrentUser extends User {
     public void send(Mail mail, List<User> recipients) {
     }
 
-    public void receive() {
+    public List<Mail> receive() {
+        return this.protocol.receive(this.host, this.getMailAddress(), this.password);
     }
 
     public void addContact(User contact) {

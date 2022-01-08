@@ -3,15 +3,13 @@
  */
 package MailClient;
 
-import MailClient.Model.Mail;
-import MailClient.Model.POP;
+import MailClient.Controller.MainController;
 import MailClient.View.MainFrame;
-
-import java.util.ArrayList;
+import MailClient.View.MainPanel;
 
 public class App {
 
     public static void main(String[] args) {
-        MainFrame mainFrame = new MainFrame();
+        MainController mc = new MainController();
     }
 }

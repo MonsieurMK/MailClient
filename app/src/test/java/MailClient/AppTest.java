@@ -3,14 +3,6 @@
  */
 package MailClient;
 
-import MailClient.Model.Mail;
-import MailClient.Model.POP;
-import org.junit.Test;
-
-import java.util.ArrayList;
-
-import static org.junit.Assert.*;
-
 public class AppTest {
 
 }
