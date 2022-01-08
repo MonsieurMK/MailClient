@@ -22,7 +22,7 @@ public class Mail {
         this.content = content;
     }
 
-    public Mail(String mailSubject, Date sentDate, List<User> senders, List<User> recipients, String content, List<Attachment> attachements) {
+    public Mail(String mailSubject, List<User> senders, List<User> recipients, Date sentDate, String content, List<Attachment> attachements) {
         this.mailSubject = mailSubject;
         this.sentDate = sentDate;
         this.senders = new ArrayList<>(senders);

@@ -5,6 +5,8 @@ import MailClient.Mail.User;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -57,9 +59,22 @@ public class POP extends ReceiveProtocol {
                     recipients.add(new User(address.toString()));
                 }
 
-                // TODO only works for text content, must adapt for other contents
+                // TODO complete the "Attachment" class
                 if (message.getContentType().contains("text")) {
                     mails.add(new Mail(message.getSubject(), senders, recipients, message.getReceivedDate(), message.getContent().toString()));
+                } else if (message.getContentType().contains("multipart")) {
+                    System.out.println("multipart yes");
+                    String body = "";
+                    Multipart multipart = (Multipart) message.getContent();
+                    for (int i = 0; i < multipart.getCount(); i++) {
+                        MimeBodyPart part = (MimeBodyPart) multipart.getBodyPart(i);
+                        if (Part.ATTACHMENT.equalsIgnoreCase(part.getDisposition())) {
+                            part.saveFile(new File("C:\\Users\\momop\\Documents\\Travail\\Informatique\\Projects\\MailClient\\AttachmentTests" + File.separator + part.getFileName()));
+                        } else {
+                            body += part.getContent().toString();
+                        }
+                        mails.add(new Mail(message.getSubject(), senders, recipients, message.getReceivedDate(), body));
+                    }
                 } else {
                     mails.add(new Mail(message.getSubject(), senders, recipients, message.getReceivedDate(), "content type not text"));
                 }
