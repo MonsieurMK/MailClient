@@ -39,6 +39,8 @@ jobs:
         # Git tag (for automatic releases)
         automatic_release_tag: latest
         # Should this release be marked as a pre-release?
+        prerelease: false
+        # Release title (for automatic releases)
         title: MailClient
         # Assets to upload to the release
         files: ./app/build/libs/app.jar
