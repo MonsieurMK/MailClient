@@ -51,6 +51,8 @@ java {
 
 // executable jar
 jar {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
     manifest {
         attributes(
                 'Main-Class': "$mainClassName"
