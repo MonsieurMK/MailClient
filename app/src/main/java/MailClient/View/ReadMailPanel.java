@@ -7,8 +7,8 @@ import java.awt.*;
 
 public class ReadMailPanel extends JPanel {
 
-    private MailTextPanel mailTextPanel;
-    private MailAttachmentPanel mailAttachmentPanel;
+    private final MailTextPanel mailTextPanel;
+    private final MailAttachmentPanel mailAttachmentPanel;
 
     public ReadMailPanel() {
         this.setBorder(BorderFactory.createLineBorder(Color.RED));
@@ -32,5 +32,10 @@ public class ReadMailPanel extends JPanel {
 
     public void showMail(Mail mail) {
         this.mailTextPanel.showMailContent(mail);
+        try {
+            this.mailAttachmentPanel.showMailAttachments(mail);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
     }
 }

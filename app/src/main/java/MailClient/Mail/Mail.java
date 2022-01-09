@@ -7,11 +7,12 @@ import java.util.List;
 public class Mail {
 
     // TODO implement senders and recipients display
-    private String mailSubject;
-    private Date sentDate;
-    private List<User> senders;
-    private List<User> recipients;
-    private String content;
+    private final String mailSubject;
+    private final Date sentDate;
+    private final List<User> senders;
+    private final List<User> recipients;
+    private final String content;
+    // maybe use a Hashmap ?
     private List<Attachment> attachements;
 
     public Mail(String mailSubject, List<User> senders, List<User> recipients, Date sentdate, String content) {
@@ -54,14 +55,18 @@ public class Mail {
         this.recipients.add(recipient);
     }
 
+    public List<Attachment> getAttachements() {
+        return attachements;
+    }
+
     @Override
     public String toString() {
         return "Mail{" +
                 "mailSubject='" + mailSubject + '\'' +
                 ", content='" + content + '\'' +
                 ", sentDate=" + sentDate +
-                ", sender=" + senders.toString() +
-                ", recipient=" + recipients.toString() +
+                ", sender=" + senders +
+                ", recipient=" + recipients +
                 '}';
     }
 }

@@ -1,7 +1,10 @@
 package MailClient.Model;
 
+import MailClient.Mail.Attachment;
 import MailClient.Mail.Mail;
 import MailClient.Mail.User;
+import net.harawata.appdirs.AppDirs;
+import net.harawata.appdirs.AppDirsFactory;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
@@ -16,6 +19,11 @@ public class POP extends ReceiveProtocol {
 
     @Override
     public List<Mail> receive(String host, String mailAddress, String password) {
+        AppDirs appDirs = AppDirsFactory.getInstance();
+        String dataFolder = appDirs.getUserDataDir("MailClient", "1.0", "MonsieurSinge");
+        //noinspection ResultOfMethodCallIgnored
+        (new File(dataFolder)).mkdirs();
+
         // properties -> sessions -> store -> folder -> messages
         // properties
         Properties props = new Properties();
@@ -64,29 +72,31 @@ public class POP extends ReceiveProtocol {
                     mails.add(new Mail(message.getSubject(), senders, recipients, message.getReceivedDate(), message.getContent().toString()));
                 } else if (message.getContentType().contains("multipart")) {
                     System.out.println("multipart yes");
-                    String body = "";
+                    StringBuilder body = new StringBuilder();
+                    ArrayList<Attachment> attachments = new ArrayList<>();
                     Multipart multipart = (Multipart) message.getContent();
                     for (int i = 0; i < multipart.getCount(); i++) {
                         MimeBodyPart part = (MimeBodyPart) multipart.getBodyPart(i);
                         if (Part.ATTACHMENT.equalsIgnoreCase(part.getDisposition())) {
-                            part.saveFile(new File("C:\\Users\\momop\\Documents\\Travail\\Informatique\\Projects\\MailClient\\AttachmentTests" + File.separator + part.getFileName()));
+                            // TODO user defined path or save in local data
+                            //File file = new File("C:\\Users\\momop\\Documents\\Travail\\Informatique\\Projects\\MailClient\\AttachmentTests" + File.separator + part.getFileName());
+                            File file = new File(dataFolder + File.separator + part.getFileName());
+                            part.saveFile(file);
+                            attachments.add(new Attachment(part.getFileName(), part.getSize(), file));
                         } else {
-                            body += part.getContent().toString();
+                            body.append(part.getContent().toString());
                         }
-                        mails.add(new Mail(message.getSubject(), senders, recipients, message.getReceivedDate(), body));
                     }
+                    mails.add(new Mail(message.getSubject(), senders, recipients, message.getReceivedDate(), body.toString(), attachments));
                 } else {
                     mails.add(new Mail(message.getSubject(), senders, recipients, message.getReceivedDate(), "content type not text"));
                 }
-
             }
             folder.close();
             store.close();
 
             return mails;
-        } catch (MessagingException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (MessagingException | IOException e) {
             e.printStackTrace();
         }
 
