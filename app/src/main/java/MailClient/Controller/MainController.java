@@ -3,6 +3,7 @@ package MailClient.Controller;
 import MailClient.Mail.Mail;
 import MailClient.Model.CurrentUser;
 import MailClient.Model.POP;
+import MailClient.Model.ReceiveProtocol;
 import MailClient.Model.UserManager;
 import MailClient.View.MainFrame;
 import MailClient.View.MainPanel;
@@ -11,14 +12,16 @@ import java.util.List;
 
 public class MainController {
 
-    private CurrentUser currentUser;
-    private UserManager userManager;
+    @SuppressWarnings("FieldCanBeLocal")
+    private final CurrentUser currentUser;
+    private final UserManager userManager;
 
-    private MainPanel mainPanel;
+    @SuppressWarnings("FieldCanBeLocal")
+    private final MainPanel mainPanel;
 
-    public MainController(String address, String name, String host, String password) {
+    public MainController(String address, String name, String host, String password, ReceiveProtocol receiveProtocol) {
         //this.currentUser = new CurrentUser("mailclienttestjava@gmail.com", "test", "pop.gmail.com", "azertyui1.", new POP());
-        this.currentUser = new CurrentUser(address, name, host, password, new POP());
+        this.currentUser = new CurrentUser(address, name, host, password, receiveProtocol);
         this.userManager = new UserManager(currentUser);
 
         this.mainPanel = new MainPanel(this);

@@ -50,35 +50,36 @@ public class POP extends ReceiveProtocol {
 
             // messages
             Message[] messages = folder.getMessages();
-            System.out.println("messages received: " + folder.getMessages().length);
             ArrayList<Mail> mails = new ArrayList<>();
             ArrayList<User> senders;
             ArrayList<User> recipients;
             for (Message message :
                     messages) {
                 senders = new ArrayList<>();
-                recipients = new ArrayList<>();
                 for (InternetAddress address:
                         (InternetAddress[]) message.getFrom()) {
                     senders.add(new User(address.getAddress(), address.getPersonal()));
                 }
+                recipients = new ArrayList<>();
                 for (InternetAddress address :
                         (InternetAddress[]) message.getAllRecipients()) {
                     recipients.add(new User(address.toString()));
                 }
 
-                // TODO complete the "Attachment" class
                 if (message.getContentType().contains("text")) {
-                    mails.add(new Mail(message.getSubject(), senders, recipients, message.getReceivedDate(), message.getContent().toString()));
+                    mails.add(new Mail(message.getSubject(),
+                            senders,
+                            recipients,
+                            message.getReceivedDate(),
+                            message.getContent().toString()));
                 } else if (message.getContentType().contains("multipart")) {
-                    System.out.println("multipart yes");
                     StringBuilder body = new StringBuilder();
                     ArrayList<Attachment> attachments = new ArrayList<>();
                     Multipart multipart = (Multipart) message.getContent();
                     for (int i = 0; i < multipart.getCount(); i++) {
                         MimeBodyPart part = (MimeBodyPart) multipart.getBodyPart(i);
                         if (Part.ATTACHMENT.equalsIgnoreCase(part.getDisposition())) {
-                            // TODO user defined path or save in local data
+                            // instead use user defined path or save in local data
                             //File file = new File("C:\\Users\\momop\\Documents\\Travail\\Informatique\\Projects\\MailClient\\AttachmentTests" + File.separator + part.getFileName());
                             File file = new File(dataFolder + File.separator + part.getFileName());
                             part.saveFile(file);
@@ -92,6 +93,7 @@ public class POP extends ReceiveProtocol {
                     mails.add(new Mail(message.getSubject(), senders, recipients, message.getReceivedDate(), "content type not text"));
                 }
             }
+
             folder.close();
             store.close();
 
