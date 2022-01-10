@@ -3,12 +3,15 @@ package MailClient.View;
 import MailClient.Mail.Mail;
 
 import javax.swing.*;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.html.HTMLDocument;
 import java.awt.*;
+import java.io.IOException;
 
 public class MailTextPanel extends JTextPane {
 
-    private MailInfoPanel mailInfosPanel;
-    private JTextArea mailBody;
+    private final MailInfoPanel mailInfosPanel;
+    private final JTextPane mailBody;
 
     public MailTextPanel() {
         this.setBorder(BorderFactory.createLineBorder(Color.CYAN));
@@ -27,12 +30,13 @@ public class MailTextPanel extends JTextPane {
         gbc.gridy = 1;
         gbc.weighty = 4.0;
         JPanel mailBodyPanel = new JPanel();
-        this.mailBody = new JTextArea();
+        this.mailBody = new JTextPane();
+        this.mailBody.setContentType("text/html");
         this.mailBody.setEditable(false);
         this.mailBody.setAlignmentX(JTextArea.LEFT_ALIGNMENT);
         mailBodyPanel.add(mailBody);
-        this.add(mailBodyPanel, gbc);
-
+        JScrollPane bodyScrollPane = new JScrollPane(this.mailBody, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        this.add(bodyScrollPane, gbc);
     }
 
     public void showMailContent(Mail mail) {
@@ -43,6 +47,11 @@ public class MailTextPanel extends JTextPane {
         this.mailInfosPanel.setSender(null);
 
         // mail body
-        this.mailBody.setText(mail.getContent());
+        HTMLDocument doc = (HTMLDocument) this.mailBody.getStyledDocument();
+        try {
+            doc.insertAfterEnd(doc.getCharacterElement(doc.getLength()), mail.getContent());
+        } catch (BadLocationException | IOException e) {
+            e.printStackTrace();
+        }
     }
 }
