@@ -45,7 +45,7 @@ public class MailCardPanel extends JScrollPane {
         public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
             super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
             if (value instanceof Mail) {
-                // need to show sender in mail list display
+                // need to show sender in mail list display (see corresponding issue)
                 this.setText("Subject : " + ((Mail) value).getMailSubject());
                 this.setToolTipText("Sent on " + ((Mail) value).getSentDate());
             }
