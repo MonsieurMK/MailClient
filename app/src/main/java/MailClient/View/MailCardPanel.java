@@ -9,10 +9,10 @@ import java.awt.*;
 
 public class MailCardPanel extends JScrollPane {
 
-    private MailListPanel parentPane;
+    private final MailListPanel parentPane;
 
-    private JList mailList;
-    private DefaultListModel<Mail> mails;
+    private final JList<Mail> mailList;
+    private final DefaultListModel<Mail> mails;
 
     public MailCardPanel(MailListPanel parentPane) {
         this.parentPane = parentPane;
@@ -29,24 +29,24 @@ public class MailCardPanel extends JScrollPane {
         this.setViewportView(this.mailList);
 
         this.mailList.setCellRenderer(new MailCellRenderer());
+        //noinspection Convert2Lambda
         this.mailList.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
                 if (!e.getValueIsAdjusting()) {
-                    MailCardPanel.this.parentPane.getParentPane().getReadMailPanel().showMail((Mail) MailCardPanel.this.mailList.getSelectedValue());
+                    MailCardPanel.this.parentPane.getParentPane().getReadMailPanel().showMail(MailCardPanel.this.mailList.getSelectedValue());
                 }
             }
         });
     }
 
-    class MailCellRenderer extends DefaultListCellRenderer {
+    static class MailCellRenderer extends DefaultListCellRenderer {
         @Override
         public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-            // TODO change if needed to change cell rendering
-            //return super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
             super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
             if (value instanceof Mail) {
-                this.setText("Subject : " + ((Mail) value).getMailSubject() + "; Content : " + ((Mail) value).getContent());
+                // need to show sender in mail list display (see corresponding issue)
+                this.setText("Subject : " + ((Mail) value).getMailSubject());
                 this.setToolTipText("Sent on " + ((Mail) value).getSentDate());
             }
             return this;

@@ -22,16 +22,18 @@ public class MailAttachmentPanel extends JPanel {
 
     public void showMailAttachments(Mail mail)
     throws IllegalAccessException {
-        for (Attachment attachment :
-                mail.getAttachements()) {
+        if (mail.getAttachements() != null) {
+            for (Attachment attachment :
+                    mail.getAttachements()) {
 
-            JButton openButton = new JButton(attachment.getName() + "; size: " + attachment.getSize());
-            openButton.addActionListener(new OpenAttachmentListener(attachment));
-            this.add(openButton);
+                JButton openButton = new JButton(attachment.getName() + "; size: " + attachment.getSize());
+                openButton.addActionListener(new OpenAttachmentListener(attachment));
+                this.add(openButton);
 
-            JButton downloadButton = new JButton("Download");
-            downloadButton.addActionListener(new DownloadButtonListener(attachment));
-            this.add(downloadButton);
+                JButton downloadButton = new JButton("Download");
+                downloadButton.addActionListener(new DownloadButtonListener(attachment));
+                this.add(downloadButton);
+            }
         }
     }
 }

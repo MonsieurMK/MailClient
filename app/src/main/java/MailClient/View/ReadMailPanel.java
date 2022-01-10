@@ -31,11 +31,13 @@ public class ReadMailPanel extends JPanel {
     }
 
     public void showMail(Mail mail) {
-        this.mailTextPanel.showMailContent(mail);
-        try {
-            this.mailAttachmentPanel.showMailAttachments(mail);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
+        if (mail != null) {
+            this.mailTextPanel.showMailContent(mail);
+            try {
+                this.mailAttachmentPanel.showMailAttachments(mail);
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
