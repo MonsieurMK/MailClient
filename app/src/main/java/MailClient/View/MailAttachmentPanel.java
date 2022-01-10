@@ -22,6 +22,7 @@ public class MailAttachmentPanel extends JPanel {
 
     public void showMailAttachments(Mail mail)
     throws IllegalAccessException {
+        this.removeAll();
         if (mail.getAttachements() != null) {
             for (Attachment attachment :
                     mail.getAttachements()) {

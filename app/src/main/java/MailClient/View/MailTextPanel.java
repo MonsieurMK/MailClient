@@ -47,6 +47,7 @@ public class MailTextPanel extends JTextPane {
         this.mailInfosPanel.setSender(null);
 
         // mail body
+        this.mailBody.setText("");
         HTMLDocument doc = (HTMLDocument) this.mailBody.getStyledDocument();
         try {
             doc.insertAfterEnd(doc.getCharacterElement(doc.getLength()), mail.getContent());
