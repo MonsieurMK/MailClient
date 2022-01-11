@@ -1,6 +1,5 @@
 package MailClient.Model;
 
-
 import MailClient.Mail.Attachment;
 import MailClient.Mail.Mail;
 import MailClient.Mail.User;
@@ -16,26 +15,53 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-public class IMAP extends ReceiveProtocol {
-    @Override
-    public List<Mail> receive(String host, String user, String password) {
+public class MailManager {
+
+    public static List<Mail> receive(String host, String user, String password, ReceiveProtocol receiveProtocol) {
         AppDirs appDirs = AppDirsFactory.getInstance();
         String dataFolder = appDirs.getUserDataDir("MailClient", "1.0", "MonsieurSinge");
         //noinspection ResultOfMethodCallIgnored
         (new File(dataFolder)).mkdirs();
 
+        Properties props;
+
         // properties
-        Properties props = System.getProperties();
-        props.setProperty("mail.store.protocol", "imaps");
+        if (receiveProtocol == ReceiveProtocol.IMAP) {
+            props = System.getProperties();
+            props.setProperty("mail.store.protocol", "imaps");
+        } else {
+            // properties -> sessions -> store -> folder -> messages
+            // properties
+            props = new Properties();
+            props.setProperty("mail.store.protocol", "pop3s");
+            props.setProperty("mail.pop3s.user", user);
+            props.setProperty("mail.pop3s.host", host);
+            // if working add port to method parameters
+            props.setProperty("mail.pop3s.port", "995");
+            // may not be needed
+            props.setProperty("mail.pop3s.ssl.enable", "true");
+            //props.setProperty("mail.debug", "true");
+        }
 
         // session
-        Session session = Session.getDefaultInstance(props, null);
-        session.setDebug(false);
+        Session session;
+        if (receiveProtocol == ReceiveProtocol.IMAP) {
+            session = Session.getDefaultInstance(props, null);
+            session.setDebug(false);
+        } else {
+            session = Session.getInstance(props);
+        }
 
         try {
             // store
-            Store store = session.getStore("imaps");
-            store.connect(host, user, password);
+            Store store;
+            if (receiveProtocol == ReceiveProtocol.IMAP) {
+                store = session.getStore("imaps");
+                store.connect(host, user, password);
+            } else {
+                store = session.getStore("pop3s");
+                store.connect(user, password);
+            }
 
             // folder
             // Folder folder = store.getFolder("Inbox");
@@ -52,7 +78,7 @@ public class IMAP extends ReceiveProtocol {
             ArrayList<Mail> mails = new ArrayList<>();
 
             // folder.open(Folder.READ_ONLY);
-
+            // test if works with POP3
             Folder[] folders = store.getDefaultFolder().list("*");
             for (Folder folder :
                     folders) {
@@ -119,5 +145,8 @@ public class IMAP extends ReceiveProtocol {
         }
 
         return null;
+    }
+
+    public static void send(Mail mail, List<User> recipients, SendProtocol sendProtocol) {
     }
 }

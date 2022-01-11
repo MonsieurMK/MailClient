@@ -7,28 +7,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CurrentUser extends User {
-    private List<User> contacts = new ArrayList<User> ();
+    private final List<User> contacts = new ArrayList<>();
 
-    private ReceiveProtocol protocol;
-
-    private List<Category> categories = new ArrayList<Category> ();
-
-    private SMTP sendProtocol;
+    private final List<Category> categories = new ArrayList<> ();
 
     private Category sent;
 
     private Category mailbox;
 
-    private String host;
+    private final String host;
 
     // TODO protect, unsafe
-    private String password;
+    private final String password;
 
-    public CurrentUser(String mailAddress, String name, String host, String password, ReceiveProtocol protocol) {
+    public CurrentUser(String mailAddress, String name, String host, String password) {
         super(mailAddress, name);
         this.host = host;
         this.password = password;
-        this.protocol = protocol;
     }
 
     public void addCategory(Category category) {
@@ -40,8 +35,8 @@ public class CurrentUser extends User {
     public void send(Mail mail, List<User> recipients) {
     }
 
-    public List<Mail> receive() {
-        return this.protocol.receive(this.host, this.getMailAddress(), this.password);
+    public List<Mail> receive(ReceiveProtocol receiveProtocol) {
+        return MailManager.receive(this.host, this.getMailAddress(), this.password, receiveProtocol);
     }
 
     public void addContact(User contact) {
