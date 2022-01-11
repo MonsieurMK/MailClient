@@ -8,11 +8,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserManager {
-    private List<User> users = new ArrayList<User> ();
+    @SuppressWarnings("FieldMayBeFinal")
+    private List<User> users = new ArrayList<> ();
 
     private DatabaseManager databaseManager;
 
-    private CurrentUser currentUser;
+    private final CurrentUser currentUser;
 
     public UserManager(CurrentUser currentUser) {
         this.currentUser = currentUser;
@@ -21,8 +22,8 @@ public class UserManager {
     public void send(String subject, String content, List<Attachment> attachements, List<User> recipients) {
     }
 
-    public List<Mail> receive() {
-        return this.currentUser.receive();
+    public List<Mail> receive(ReceiveProtocol receiveProtocol) {
+        return this.currentUser.receive(receiveProtocol);
     }
 
     public List<Mail> find(String query) {

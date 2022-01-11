@@ -4,11 +4,8 @@
 package MailClient;
 
 import MailClient.Controller.MainController;
-import MailClient.Model.IMAP;
-import MailClient.Model.POP;
+import MailClient.Model.MailManager;
 import MailClient.Model.ReceiveProtocol;
-import MailClient.View.MainFrame;
-import MailClient.View.MainPanel;
 
 public class App {
 
@@ -16,9 +13,9 @@ public class App {
     throws IllegalArgumentException {
         ReceiveProtocol receiveProtocol;
         if (args[4].equals("POP3")) {
-            receiveProtocol = new POP();
+            receiveProtocol = ReceiveProtocol.POP3;
         } else if (args[4].equals("IMAP")) {
-            receiveProtocol = new IMAP();
+            receiveProtocol = ReceiveProtocol.IMAP;
         } else {
             throw new IllegalArgumentException("incorrect receive protocol");
         }
