@@ -34,6 +34,9 @@ dependencies {
 
     // Java AppDirs to store files in local files on any systems
     implementation 'net.harawata:appdirs:1.2.1'
+
+    // Sqlite JDBC
+    implementation 'org.xerial:sqlite-jdbc:3.36.0.3'
 }
 
 test {
@@ -60,6 +63,7 @@ java {
 jar {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 
+    //noinspection GroovyAssignabilityCheck
     manifest {
         attributes(
                 'Main-Class': "$mainClassName"

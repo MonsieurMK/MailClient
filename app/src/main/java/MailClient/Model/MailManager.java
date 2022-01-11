@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-public class MailManager {
+public final class MailManager {
 
     public static List<Mail> receive(String host, String user, String password, ReceiveProtocol receiveProtocol) {
         AppDirs appDirs = AppDirsFactory.getInstance();
@@ -119,7 +119,7 @@ public class MailManager {
                                 if (Part.ATTACHMENT.equalsIgnoreCase(part.getDisposition())) {
                                     // instead use user defined path or save in local data
                                     //File file = new File("C:\\Users\\momop\\Documents\\Travail\\Informatique\\Projects\\MailClient\\AttachmentTests" + File.separator + part.getFileName());
-                                    File file = new File(dataFolder + File.separator + part.getFileName());
+                                    File file = new File(dataFolder + File.separator + "attachments" + File.separator +  part.getFileName());
                                     part.saveFile(file);
                                     attachments.add(new Attachment(part.getFileName(), part.getSize(), file));
                                 } else {
